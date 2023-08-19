@@ -126,15 +126,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onTap: () {
                     context.read<LoginBloc>().add(LoginEvent.login(
-                      onSuccess: (){
-                         StorageRepository.putString('user_password', passwordController.text);
-                         context
-                             .read<AuthenticationBloc>()
-                             .add(AuthenticationStatusChanged(status: AuthStatus.authenticated));
-                        Navigator.pushAndRemoveUntil(context, fade(const NavHomeScreen()), (route) => false);
-                      },
-                        onError: (e){
-                        print(e + "error");
+                        onSuccess: () {
+                          StorageRepository.putString(
+                              'user_password', passwordController.text);
+                          context.read<AuthenticationBloc>().add(
+                              AuthenticationStatusChanged(
+                                  status: AuthStatus.authenticated));
+                          Navigator.pushAndRemoveUntil(context,
+                              fade(const NavHomeScreen()), (route) => false);
+                        },
+                        onError: (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              backgroundColor: Color(0xff4631D2),
+                              content: Text(
+                                'Электронная почта или пароль неверны!',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    fontSize: 16),
+                              )));
                         },
                         userModel: LoginModel(
                             email: emailController.text,
